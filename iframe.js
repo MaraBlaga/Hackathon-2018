@@ -6,33 +6,43 @@
 	"*"
 );*/
 function extractHostname(url) {
-    var hostname;
-    //find & remove protocol (http, ftp, etc.) and get hostname
+	var hostname;
+	//find & remove protocol (http, ftp, etc.) and get hostname
 
-    if (url.indexOf("://") > -1) {
-        hostname = url.split('/')[2];
-    }
-    else {
-        hostname = url.split('/')[0];
-    }
+	if (url.indexOf("://") > -1) {
+		hostname = url.split('/')[2];
+	}
+	else {
+		hostname = url.split('/')[0];
+	}
 
-    //find & remove port number
-    hostname = hostname.split(':')[0];
-    //find & remove "?"
-    hostname = hostname.split('?')[0];
+	//find & remove port number
+	hostname = hostname.split(':')[0];
+	//find & remove "?"
+	hostname = hostname.split('?')[0];
 
-    return hostname;
+	return hostname;
 }
 
-			
+
 function saveSurvey(event) {
 	event.preventDefault();
-	alert("CLICK!");
+
 	var url = (window.location != window.parent.location)
-			? extractHostname(document.referrer)
-            : document.location.hostname;
-			
-	chrome.runtime.sendMessage(
+		? extractHostname(document.referrer)
+		: document.location.hostname;
+
+
+	chrome.runtime.sendMessage({type: "notification", options: {
+			host: url, // Not the survey URL
+			survey: 'http://www.surveymonkey.com' // Survey URL
+		}}, function (result) {
+		console.log('Result: ');
+		console.log(result);
+	});
+
+
+	/*chrome.runtime.sendMessage(
 		{
 			host: url, //Not the survey URL
 			url:  'http://www.surveymonkey.com' //Survey URL
@@ -41,7 +51,7 @@ function saveSurvey(event) {
 			console.log("Result: ");
 			console.log(result);
 		}
-	);
+	);*/
 }
 
 var button = document.createElement('span');
