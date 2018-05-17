@@ -6,28 +6,28 @@
   "version": "0.1",
 
   "browser_action": {
-	"default_icon": "icon.png",
-	"default_popup": "surveys.html"
+    "default_icon": "icon.png",
+    "default_popup": "surveys.html"
   },
   "permissions": [
-	"storage",
-	"activeTab",
-	"tabs"
+    "storage",
+    "activeTab",
+    "tabs"
   ],
   "icons": {
-	"16": "awesome-16.png",
-	"128": "awesome-128.png"
-  },
-  "background": {
-	"persistent": false,
-	"scripts": ["surveys.js"]
+    "16": "awesome-16.png",
+    "128": "awesome-128.png"
   },
   "content_scripts": [
 	{
-	  "matches": ["http://edigitalsurvey.com/l.php*"],
-	  "css": [],
-	  "js": ["iframe.js"],
-	  "all_frames": true
+	    "matches": ["http://edigitalsurvey.com/l.php*"],
+		"css": [],
+		"js": ["iframe.js"],
+		"all_frames": true
 	}
-  ]
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  }
 }
