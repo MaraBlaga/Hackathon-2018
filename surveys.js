@@ -21,7 +21,18 @@ function save_surveys(surveys, callback) {
 	});
 }
 
+
+function updateCount(surveys) {
+	var count = surveys.length;
+	if (count !== 0) {
+		chrome.browserAction.setBadgeText({text: count.toString()}); // Display how many surveys we have
+		chrome.browserAction.setBadgeBackgroundColor({color: [244, 104, 19, 100]});
+	}
+}
+
+
 function render_surveys(surveys) {
+	updateCount(surveys);
 	for (let survey of surveys) {
 		add_to_list(survey);
 	}
@@ -66,6 +77,7 @@ function remove_from_list(survey) {
 					let row = document.querySelector('table#surveyList tbody tr:nth-of-type('+(i+1)+')');
 					row.parentNode.removeChild(row);
 				});
+                updateCount(surveys);
 				return;
 			}
 		}

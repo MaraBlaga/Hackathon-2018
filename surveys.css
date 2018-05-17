@@ -25,12 +25,18 @@ table#surveyList td.actions {
     min-width: 150px;
 }
 table#surveyList td.actions button {
-    border: none;
     border-radius: 4px;
-    background-color: #7aadde;
-    color: #fff;
+    border-color: #3090ec;
+    background-color: transparent;
+    color: #3090ec;
     cursor: pointer;
     font-family: inherit;
     margin-left: 10px;
     padding: 8px;
+}
+
+table#surveyList td.actions button:hover, button:focus {
+    border-color: #3090ec;
+    background-color: #7aadde;
+    color: #FFF;
 }
