@@ -20,7 +20,7 @@
   },
   "content_scripts": [
 	{
-	    "matches": ["http://edigitalsurvey.com/l.php*"],
+	    "matches": ["http://*/l.php*"],
 		"css": [],
 		"js": ["iframe.js"],
 		"all_frames": true
