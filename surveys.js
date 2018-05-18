@@ -52,7 +52,7 @@ function add_to_list(survey) {
 	var img = document.createElement('img');
 	img.style.height = '16px';
 	img.style.width = '16px';
-    img.src = 'http://' + survey.icon;
+    img.src = survey.icon;
 	iconCell.appendChild(img);
 
 	hostCell.classList.add('survey');

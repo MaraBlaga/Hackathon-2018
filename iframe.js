@@ -5,26 +5,29 @@
 	},
 	"*"
 );*/
-function extractHostname(url, getPort) {
-	var hostname;
-	//find & remove protocol (http, ftp, etc.) and get hostname
+function extractHostname(url, getProtocol, getPort) {
+    var hostname;
 
-	if (url.indexOf("://") > -1) {
-		hostname = url.split('/')[2];
-	}
-	else {
-		hostname = url.split('/')[0];
-	}
+    if (getProtocol === false) {
+        if (url.indexOf("://") > -1) {
+            hostname = url.split('/')[2];
+        }
+        else {
+            hostname = url.split('/')[0];
+        }
+    } else {
+        hostname = url.split('/')[0] + '//' + url.split('/')[2];
+    }
 
-	if (getPort === false) {
+    if (getPort === false) {
+        parts = hostname.split(':');
         //find & remove port number
-        hostname = hostname.split(':')[0];
-	}
-
-	//find & remove "?"
-	hostname = hostname.split('?')[0];
-
-	return hostname;
+        hostname = parts[0];
+        if (getProtocol) {
+            hostname += ':' + parts[1];
+        }
+    }
+    return hostname;
 }
 
 
@@ -32,10 +35,10 @@ function saveSurvey(event) {
 	event.preventDefault();
 
 	var url = (window.location != window.parent.location)
-		? extractHostname(document.referrer, false)
+		? extractHostname(document.referrer, false, false)
 		: document.location.hostname;
 
-	var iconPath = extractHostname(document.referrer, true) + '/favicon.ico';
+	var iconPath = extractHostname(document.referrer, true, true) + '/favicon.ico';
 
 	chrome.runtime.sendMessage({type: "notification", options: {
 			icon: iconPath,
