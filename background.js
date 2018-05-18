@@ -47,6 +47,14 @@ chrome.runtime.onMessage.addListener(
                     data.surveyList.push(survey);
                     chrome.storage.sync.set({surveyList: data.surveyList}, function() {
                         updateCount(data.surveyList);
+                        chrome.notifications.create('addedSurvey', {
+                        	'message': 'Survey has been saved for later',
+							'type': 'basic',
+							'iconUrl': 'S-icon.png',
+							'title': 'Success'
+						}, function () {
+                        	console.log('Created notification');
+						});
                         callback({
 							success: true,
 							alreadyExists: false,

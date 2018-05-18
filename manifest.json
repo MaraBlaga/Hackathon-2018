@@ -12,7 +12,8 @@
   "permissions": [
     "storage",
     "activeTab",
-    "tabs"
+    "tabs",
+	"notifications"
   ],
   "icons": {
     "16": "S-icon.png",
