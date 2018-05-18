@@ -1,6 +1,6 @@
 function surveyAlreadyAdded(newSurvey, surveys) {
     for (let survey of surveys) {
-        if (survey.url === newSurvey.url) {
+        if (survey.entryData.deploymentId === newSurvey.entryData.deploymentId) {
             return true;
         }
     }
@@ -22,6 +22,7 @@ chrome.storage.sync.get({
     // Key: default value if not set
     surveyList: [],
 }, function(data) {
+    console.log(data.surveyList);
     updateCount(data.surveyList);
 });
 
