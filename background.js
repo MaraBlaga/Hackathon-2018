@@ -1,6 +1,6 @@
 function surveyAlreadyAdded(newSurvey, surveys) {
     for (let survey of surveys) {
-        if (survey.url === newSurvey.url) {
+        if (survey.entryData.deploymentId === newSurvey.entryData.deploymentId) {
             return true;
         }
     }
@@ -22,6 +22,7 @@ chrome.storage.sync.get({
     // Key: default value if not set
     surveyList: [],
 }, function(data) {
+    console.log(data.surveyList);
     updateCount(data.surveyList);
 });
 
@@ -35,14 +36,23 @@ chrome.runtime.onMessage.addListener(
                     surveyList: [],
                 }, function(data) {
                     if (surveyAlreadyAdded(survey, data.surveyList)) {
-                        callback({message: 'This survey has already been added'});
+                        callback({
+							success: true,
+							alreadyExists: true,
+							message: 'This survey has already been added'
+                        });
                         return;
                     }
 
                     data.surveyList.push(survey);
                     chrome.storage.sync.set({surveyList: data.surveyList}, function() {
                         updateCount(data.surveyList);
-                        callback({message: 'Survey added', count: data.surveyList.length});
+                        callback({
+							success: true,
+							alreadyExists: false,
+							message: 'Survey added',
+							count: data.surveyList.length
+                        });
                     });
                 });
                 break;
