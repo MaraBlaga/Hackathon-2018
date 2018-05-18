@@ -1,6 +1,7 @@
 function surveyAlreadyAdded(newSurvey, surveys) {
     for (let survey of surveys) {
-        if (survey.entryData.deploymentId === newSurvey.entryData.deploymentId) {
+        //if (survey.entryData.deploymentId === newSurvey.entryData.deploymentId) {
+        if (survey.host === newSurvey.host) {
             return true;
         }
     }
@@ -36,6 +37,15 @@ chrome.runtime.onMessage.addListener(
                     surveyList: [],
                 }, function(data) {
                     if (surveyAlreadyAdded(survey, data.surveyList)) {
+						chrome.notifications.create('addedSurvey', {
+							'message': 'This survey has already been saved',
+							'type': 'basic',
+							'iconUrl': 'S-icon-2.png',
+							'title': 'Warning'
+						}, function () {
+							console.log('Created warning notification');
+						});
+
                         callback({
 							success: true,
 							alreadyExists: true,

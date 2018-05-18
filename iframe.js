@@ -65,10 +65,6 @@ function saveSurvey(event) {
                 uuid: ""
             }
 		}}, function (result) {
-		if (result.alreadyExists) {
-			alert(result.message);
-		}
-
 		if (result.success) {
 			window.parent.postMessage({destroyLayer: true}, "*");
 		}
