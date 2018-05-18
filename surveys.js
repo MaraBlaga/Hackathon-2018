@@ -59,10 +59,7 @@ function add_to_list(survey) {
 	actionCell.appendChild(removeButton);
 
 	enterButton.addEventListener("click", function() {
-		//chrome.tabs.create({url: survey.url});
-		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-			chrome.tabs.update(tabs[0].id, {url: survey.url});
-		});
+		chrome.tabs.create({url: survey.url});
 	});
 
 	removeButton.addEventListener("click", function() {
