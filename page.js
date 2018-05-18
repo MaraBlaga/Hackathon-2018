@@ -1,16 +1,28 @@
-window.addEventListener('message', receiveMessage, false);
+if (document.readyState === 'complete') {
+	myInitCode();
+} else {
+	document.addEventListener('DOMContentLoaded', function () {
+		myInitCode();
+	});
+}
 
-function receiveMessage(evt)
-{
-	if (evt.origin === 'http://edigitalsurvey.com' || evt.origin.includes('.dev.edig.co.uk')) {
-		if (!evt.data.hasOwnProperty('destroyLayer') || evt.data.destroyLayer !== true) {
-			return;
-		}
+function myInitCode() {
+	function main () {
+		window.addEventListener('message', receiveMessage, false);
 
-		var surveyLayer = window.document.getElementById('edr_survey');
+		function receiveMessage(evt)
+		{
+			if (evt.origin === 'http://edigitalsurvey.com' || evt.origin.includes('.dev.edig.co.uk')) {
+				if (!evt.data.hasOwnProperty('destroyLayer') || evt.data.destroyLayer !== true) {
+					return;
+				}
 
-		if (surveyLayer != null) {
-			surveyLayer.parentNode.removeChild(surveyLayer);
+				EDRSurvey.getLayers()[0].destroy();
+			}
 		}
 	}
+
+	var script = window.document.createElement('script');
+	script.appendChild(window.document.createTextNode('('+ main +')();'));
+	(document.body || document.head || document.documentElement).appendChild(script);
 }
