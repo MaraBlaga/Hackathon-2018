@@ -43,10 +43,17 @@ function render_surveys(surveys) {
 function add_to_list(survey) {
 	let table = document.querySelector('table#surveyList tbody'),
 		row = table.insertRow(-1),
-		hostCell = row.insertCell(0),
-		actionCell = row.insertCell(1),
+		iconCell = row.insertCell(0),
+		hostCell = row.insertCell(1),
+		actionCell = row.insertCell(2),
 		enterButton = document.createElement('button'),
 		removeButton = document.createElement('button');
+
+	var img = document.createElement('img');
+	img.style.height = '16px';
+	img.style.width = '16px';
+    img.src = 'http://' + survey.icon;
+	iconCell.appendChild(img);
 
 	hostCell.classList.add('survey');
 	hostCell.innerHTML = survey.host;

@@ -5,7 +5,7 @@
 	},
 	"*"
 );*/
-function extractHostname(url) {
+function extractHostname(url, getPort) {
 	var hostname;
 	//find & remove protocol (http, ftp, etc.) and get hostname
 
@@ -16,8 +16,11 @@ function extractHostname(url) {
 		hostname = url.split('/')[0];
 	}
 
-	//find & remove port number
-	hostname = hostname.split(':')[0];
+	if (getPort === false) {
+        //find & remove port number
+        hostname = hostname.split(':')[0];
+	}
+
 	//find & remove "?"
 	hostname = hostname.split('?')[0];
 
@@ -29,11 +32,13 @@ function saveSurvey(event) {
 	event.preventDefault();
 
 	var url = (window.location != window.parent.location)
-		? extractHostname(document.referrer)
+		? extractHostname(document.referrer, false)
 		: document.location.hostname;
 
+	var iconPath = extractHostname(document.referrer, true) + '/favicon.ico';
 
 	chrome.runtime.sendMessage({type: "notification", options: {
+			icon: iconPath,
 			host: url, // Not the survey URL
 			survey: 'http://www.surveymonkey.com' // Survey URL
 		}}, function (result) {
