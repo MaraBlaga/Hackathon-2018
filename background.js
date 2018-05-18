@@ -36,14 +36,23 @@ chrome.runtime.onMessage.addListener(
                     surveyList: [],
                 }, function(data) {
                     if (surveyAlreadyAdded(survey, data.surveyList)) {
-                        callback({message: 'This survey has already been added'});
+                        callback({
+							success: true,
+							alreadyExists: true,
+							message: 'This survey has already been added'
+                        });
                         return;
                     }
 
                     data.surveyList.push(survey);
                     chrome.storage.sync.set({surveyList: data.surveyList}, function() {
                         updateCount(data.surveyList);
-                        callback({message: 'Survey added', count: data.surveyList.length});
+                        callback({
+							success: true,
+							alreadyExists: false,
+							message: 'Survey added',
+							count: data.surveyList.length
+                        });
                     });
                 });
                 break;

@@ -65,21 +65,17 @@ function saveSurvey(event) {
                 uuid: ""
             }
 		}}, function (result) {
+		if (result.alreadyExists) {
+			alert(result.message);
+		}
+
+		if (result.success) {
+			window.parent.postMessage({destroyLayer: true}, "*");
+		}
+
 		console.log('Result: ');
 		console.log(result);
 	});
-
-
-	/*chrome.runtime.sendMessage(
-		{
-			host: url, //Not the survey URL
-			url:  'http://www.surveymonkey.com' //Survey URL
-		},
-		function(result) {
-			console.log("Result: ");
-			console.log(result);
-		}
-	);*/
 }
 
 var button = document.createElement('span');
