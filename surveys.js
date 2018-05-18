@@ -27,12 +27,14 @@ function updateCount(surveys) {
 	if (count !== 0) {
 		chrome.browserAction.setBadgeText({text: count.toString()}); // Display how many surveys we have
 		chrome.browserAction.setBadgeBackgroundColor({color: [244, 104, 19, 100]});
+	} else {
+		chrome.browserAction.setBadgeText({text: ''});
 	}
 }
 
 
 function render_surveys(surveys) {
-	updateCount(surveys);
+	updateExtension(surveys);
 	for (let survey of surveys) {
 		add_to_list(survey);
 	}
@@ -77,11 +79,23 @@ function remove_from_list(survey) {
 					let row = document.querySelector('table#surveyList tbody tr:nth-of-type('+(i+1)+')');
 					row.parentNode.removeChild(row);
 				});
-                updateCount(surveys);
+				updateExtension(surveys);
 				return;
 			}
 		}
 	});
+}
+
+function updateExtension(surveys) {
+	updateCount(surveys);
+	updateView(surveys);
+}
+
+function updateView(surveys) {
+    if (surveys.length === 0) {
+        document.querySelector('#surveyList').setAttribute('style','display:none;');
+        let placeholder = document.querySelector('#placeholder').innerHTML = '<p style="text-align: center">You do not have any saved for later surveys.</p>';
+    }
 }
 
 document.addEventListener('DOMContentLoaded', restore_surveys);

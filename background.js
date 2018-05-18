@@ -8,6 +8,23 @@ function surveyAlreadyAdded(newSurvey, surveys) {
     return false;
 }
 
+function updateCount(surveys) {
+    let count = surveys.length;
+    if (count !== 0) {
+        chrome.browserAction.setBadgeText({text: count.toString()}); // Display how many surveys we have
+        chrome.browserAction.setBadgeBackgroundColor({color: [244, 104, 19, 100]});
+    } else {
+    chrome.browserAction.setBadgeText({text: ''});
+    }
+}
+
+chrome.storage.sync.get({
+    // Key: default value if not set
+    surveyList: [],
+}, function(data) {
+    updateCount(data.surveyList);
+});
+
 chrome.runtime.onMessage.addListener(
     function(request, sender, callback) {
         switch (request.type) {
@@ -24,6 +41,7 @@ chrome.runtime.onMessage.addListener(
 
                     data.surveyList.push(survey);
                     chrome.storage.sync.set({surveyList: data.surveyList}, function() {
+                        updateCount(data.surveyList);
                         callback({message: 'Survey added', count: data.surveyList.length});
                     });
                 });
