@@ -40,7 +40,7 @@ function saveSurvey(event) {
 	chrome.runtime.sendMessage({type: "notification", options: {
 			icon: iconPath,
 			host: url, // Not the survey URL
-			survey: 'http://www.surveymonkey.com' // Survey URL
+			url: 'http://www.surveymonkey.com' // Survey URL
 		}}, function (result) {
 		console.log('Result: ');
 		console.log(result);
