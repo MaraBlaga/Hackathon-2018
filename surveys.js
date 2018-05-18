@@ -21,11 +21,23 @@ function save_surveys(surveys, callback) {
 	});
 }
 
-function set_survey_guid_prepared(guid) {
+function set_survey_prepared(guid) {
     get_surveys(function(surveys) {
         for (let survey of surveys) {
             if (survey.guid === guid) {
                 survey.prepared = true;
+                save_surveys(surveys);
+                return;
+            }
+        }
+    });
+}
+
+function set_survey_entered(guid) {
+    get_surveys(function(surveys) {
+        for (let survey of surveys) {
+            if (survey.guid === guid) {
+                survey.entered = true;
                 save_surveys(surveys);
                 return;
             }
@@ -56,7 +68,8 @@ function add_to_list(survey) {
 		row = table.insertRow(-1),
 		iconCell = row.insertCell(0),
 		hostCell = row.insertCell(1),
-		actionCell = row.insertCell(2),
+		enteredCell = row.insertCell(2),
+		actionCell = row.insertCell(3),
 		enterButton = document.createElement('button'),
 		removeButton = document.createElement('button');
 
@@ -68,6 +81,8 @@ function add_to_list(survey) {
 
 	hostCell.classList.add('survey');
 	hostCell.innerHTML = survey.host;
+
+	enteredCell.innerHTML = (survey.entered) ? 'Yes' : 'No';
 
 	enterButton.innerHTML = 'Enter';
 	removeButton.innerHTML = 'Remove';
@@ -86,7 +101,7 @@ function add_to_list(survey) {
             request.onload = function () {
                 if (request.status >= 200 && request.status < 400) {
                     // Success!
-                    set_survey_guid_prepared(survey.guid);
+                    set_survey_prepared(survey.guid);
                 } else {
                     // Server returned an error
                 }
@@ -116,6 +131,7 @@ function add_to_list(survey) {
             request.send(paramsString);
         }
 
+        set_survey_entered(survey.guid);
         //chrome.tabs.create({url: 'https://surveys.edigitalresearch.com/deploy/enter/guid/' + survey.guid + '/installation/' + survey.entryData.installationId});
         chrome.tabs.create({url: 'http://surveys.php7.edr-0902.dev.edig.co.uk:8083/deploy/enter/guid/' + survey.guid + '/installation/' + survey.entryData.installationId});
 	});
