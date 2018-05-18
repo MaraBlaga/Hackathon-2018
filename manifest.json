@@ -24,6 +24,14 @@
 		"css": [],
 		"js": ["iframe.js"],
 		"all_frames": true
+	},
+	{
+		"matches": ["http://*/*"],
+	  	"exclude_matches": ["http://*/l.php*"],
+		"css": [],
+	    "all_frames" : true,
+		"js": ["page.js"],
+	  	"run_at": "document_start"
 	}
   ],
   "background": {
